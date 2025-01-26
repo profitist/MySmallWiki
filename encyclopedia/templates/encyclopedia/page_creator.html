@@ -1,0 +1,23 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia
+{% endblock %}
+
+{% block body %}
+    <form action="{% url 'encyclopedia:save_page' %}" method="post">
+        {% csrf_token %}
+        {% if redo and new_page %}
+            <input class="red-placeholder" id="title_red" type="text" name="title" 
+                   placeholder="Title '{{page_name}}' has already been taken" 
+                   required minlength="1">
+            <input type="hidden" value="1" name="creation_flag">
+        {% else %}    
+            <input id="common_title" type="text" name="title" placeholder="Title" required minlength="1"
+            value="{{ page_name }}">
+            <input type="hidden" value="0" name="creation_flag">
+        {% endif %}
+        <textarea placeholder="Start typing here" name="content">{{ content }}</textarea>
+        <button type="submit">Save</button>
+    </form>
+{% endblock %}
