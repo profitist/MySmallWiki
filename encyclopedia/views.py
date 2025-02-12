@@ -1,12 +1,11 @@
 import random
 
+
 from django.shortcuts import render
-import os
-from django.shortcuts import render
-from django.conf import settings
 import markdown
 from . import util
-from random import choice;
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 
 def index(request):
@@ -35,7 +34,7 @@ def search_page(request):
         if matches:
             return render(request, "encyclopedia/search_results.html", {"search_results": matches})
         return render(request, "encyclopedia/articleNotFound.html", {"page_name": word})
-    return render(request, "encyclopedia/index.html")
+    return HttpResponseRedirect(reverse("index"))
 
 
 def create_page(request):
@@ -62,7 +61,7 @@ def save_page(request):
         markdown_text = markdown.markdown(content)
         return render(request, "encyclopedia/article.html", {
             "page_name": title, "markdown_text": markdown_text})
-    return render(request, "encyclopedia/index.html")
+    return HttpResponseRedirect(reverse("index"))
 
 
 def edit_page(request, filename):
